@@ -52,6 +52,12 @@ def example_generator(dist_file, window_size, num_examples):
 
 
 def generate_data(window_size, n_train, n_eval):
+    """generate example data.
+    
+    window_size: points per record
+    n_train: number of records in train_data.csv
+    n_eval: number of records in eval_data.csv
+    """
 
     example_generator('train_data.csv', window_size=window_size, num_examples=n_train)
     example_generator('eval_data.csv', window_size=window_size, num_examples=n_eval)
