@@ -81,10 +81,10 @@ def inputs():
     return examples, labels
 
 
-def eval_inputs():
+def eval_inputs(batch_size=FLAGS.batch_size):
     """Construct evaluation input for haptic records"""
     data_dir = os.path.join(FLAGS.data_dir, '')
-    examples, labels = hap_input.eval_input(batch_size=FLAGS.batch_size,
+    examples, labels = hap_input.eval_input(batch_size=batch_size,
                                               data_dir=data_dir)
     return examples, labels
 
