@@ -16,11 +16,11 @@ tf.app.flags.DEFINE_string('eval_data', 'test',
                            """Either 'test' or 'train_eval'.""")
 tf.app.flags.DEFINE_string('checkpoint_dir', '/tmp/hap_train',
                            """Directory where to read model checkpoints.""")
-tf.app.flags.DEFINE_integer('eval_interval_secs', 60 * 5,
+tf.app.flags.DEFINE_integer('eval_interval_secs', 5,
                             """How often to run the eval.""")
 tf.app.flags.DEFINE_integer('num_examples', 100,
                             """Number of examples to run.""")
-tf.app.flags.DEFINE_boolean('run_once', True,
+tf.app.flags.DEFINE_boolean('run_once', False,
                             """Whether to run eval only once.""")
 
 
@@ -66,12 +66,12 @@ def eval_once(saver, summary_writer, top_k_op, summary_op):
 
             # Compute precision @ 1.
             precision = true_count / total_sample_count
-            print('%s: precision @ 1 = %.3f' % (datetime.now(), precision))
+            print('%s: precision @ %d = %.3f' % (datetime.now(), int(global_step), precision))
 
             summary = tf.Summary()
             summary.ParseFromString(sess.run(summary_op))
 
-            summary.value.add(tag='Precision @ 1', simple_value=precision)
+            summary.value.add(tag='Precision', simple_value=precision)
             summary_writer.add_summary(summary, global_step)
         except Exception as e:  # pylint: disable=broad-except
             coord.request_stop(e)
