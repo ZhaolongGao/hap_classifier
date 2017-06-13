@@ -29,7 +29,7 @@ def read_hapdata(filename_queue):
     reader = tf.TextLineReader()
     result.key, value = reader.read(filename_queue, name='example_string_input')
 
-    record_defaults = [[1]] + [[1.0] for _ in range(NUM_REC_PER_WINDOW)]
+    record_defaults = [[1]] + [[1.0] for _ in range(result.width * result.depth)]
 
     reader_output = tf.decode_csv(value, record_defaults=record_defaults)
 
