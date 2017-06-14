@@ -9,7 +9,7 @@ NUM_EXAMPLES_PER_EPOCH_FOR_EVAL = 100
 # Dimension of a single example
 # SAMP_FREQ = 5000
 # MILISEC_PER_WINDOW = 100
-NUM_REC_PER_WINDOW = 500  # SAMP_FREQ * MILI_SEC_PER_WINDOW / 1000
+NUM_REC_PER_WINDOW = 100  # SAMP_FREQ * MILI_SEC_PER_WINDOW / 1000
 WIDTH_MULTIPLIER = 1
 CHANNELS = 1
 
@@ -29,7 +29,7 @@ def read_hapdata(filename_queue):
     reader = tf.TextLineReader()
     result.key, value = reader.read(filename_queue, name='example_string_input')
 
-    record_defaults = [[1]] + [[1.0] for _ in range(result.width * result.depth)]
+    record_defaults = [[1]] + [[1.0] for _ in range(result.length * result.depth)]
 
     reader_output = tf.decode_csv(value, record_defaults=record_defaults)
 
