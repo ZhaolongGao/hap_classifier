@@ -56,7 +56,7 @@ def predict(logits):
 
 
 
-def eval(saver, summary_writer, op_todo, dict, summary_op):
+def eval(saver, summary_writer, op_todo, dict_fn, summary_op):
     with tf.Session() as sess:
         ckpt = tf.train.get_checkpoint_state(FLAGS.checkpoint_dir)
         if ckpt and ckpt.model_checkpoint_path:
@@ -79,8 +79,9 @@ def eval(saver, summary_writer, op_todo, dict, summary_op):
                 threads.extend(qr.create_threads(sess, coord=coord, daemon=True,
                                              start=True))
 
-            predictions = sess.run([op_todo],feed_dict=dict)
-            print(predict(predictions))
+            while True:
+                predictions = sess.run([op_todo],feed_dict=dict_fn())
+                print(predict(predictions))
             #
             # summary = tf.Summary()
             # summary.ParseFromString(sess.run(summary_op))
@@ -111,13 +112,15 @@ def evaluate():
 
         summary_writer = tf.summary.FileWriter(FLAGS.predict_dir, g)
 
+        # Create connection with LabView
         client = connect_to_labview()
-        while True:
-            #todo:put tcpip get data inside the eval function
-            # Get data from TCP/IP connection with LabView
-            dict = {examples:get_data_from_labview(client)}
 
-            eval(saver, summary_writer, logits, dict, summary_op)
+        while True:
+            # Building dictionary for data feeding
+            dict_fn = lambda : {examples:get_data_from_labview(client)}
+
+            # Evaluation
+            eval(saver, summary_writer, logits, dict_fn, summary_op)
             if FLAGS.run_once:
                 break
             # time.sleep(FLAGS.eval_interval_secs)
