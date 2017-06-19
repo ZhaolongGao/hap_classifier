@@ -50,9 +50,15 @@ def get_data_from_labview(client):
     return float_data_array
 
 
-def predict(logits):
-    #todo: prediction of class
-    return logits
+def predict(logits, verbose=False):
+    # Prediction of class
+    n_classes = logits.shape[0]
+    prediction = logits.argmax() + 1
+    if verbose:
+        result = str(prediction) + ' From '+ str(n_classes) + ' classes.\n' + str(logits)
+    else:
+        result = str(prediction) + ' From '+ str(n_classes) + ' classes.\n'
+    return result
 
 
 
