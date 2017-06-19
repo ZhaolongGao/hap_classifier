@@ -55,9 +55,9 @@ def predict(logits, verbose=False):
     n_classes = logits.shape[0]
     prediction = logits.argmax() + 1
     if verbose:
-        result = str(prediction) + ' From '+ str(n_classes) + ' classes.\n' + str(logits)
+        result = str(prediction) + ' From '+ str(n_classes) + ' classes.' + str(logits)
     else:
-        result = str(prediction) + ' From '+ str(n_classes) + ' classes.\n'
+        result = str(prediction) + ' From '+ str(n_classes) + ' classes.'
     return result
 
 
@@ -87,7 +87,7 @@ def eval(saver, summary_writer, op_todo, dict_fn, summary_op):
 
             while True:
                 predictions = sess.run([op_todo],feed_dict=dict_fn())
-                print(predict(predictions))
+                print(predict(predictions[0]))
             #
             # summary = tf.Summary()
             # summary.ParseFromString(sess.run(summary_op))
